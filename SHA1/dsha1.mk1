@@ -1,0 +1,30 @@
+!define BLANK ""
+d:\digest\sha1\DSHA1.obj : d:\digest\sha1\DSHA1.C .AUTODEPEND
+ @d:
+ cd d:\digest\sha1
+ *wcc386 DSHA1.C -i=D:\watcom\h;D:\watcom\h\os2 -w4 -e25 -zq -od -bd -3s -bt&
+=os2 -mf
+
+d:\digest\sha1\SHA1.obj : d:\digest\sha1\SHA1.C .AUTODEPEND
+ @d:
+ cd d:\digest\sha1
+ *wcc386 SHA1.C -i=D:\watcom\h;D:\watcom\h\os2 -w4 -e25 -zq -od -bd -3s -bt=&
+os2 -mf
+
+d:\digest\sha1\dsha1.dll : d:\digest\sha1\DSHA1.obj d:\digest\sha1\SHA1.obj &
+.AUTODEPEND
+ @d:
+ cd d:\digest\sha1
+ @%write dsha1.lk1 FIL DSHA1.obj,SHA1.obj
+ @%append dsha1.lk1 
+!ifneq BLANK ""
+ *wlib -q -n -b dsha1.imp 
+ @%append dsha1.lk1 LIBR dsha1.imp
+!endif
+ *wlink name dsha1 SYS os2v2 dll initi termi exp DIGESTINIT exp DIGESTUPDATE&
+ exp DIGESTRESULT op v op maxe=25 op many @dsha1.lk1
+!ifneq BLANK ""
+ rc -i $[: -i D:\watcom\h -i D:\watcom\h\os2  dsha1.dll
+!endif
+ wlib -n -b dsha1.lib +dsha1.dll
+

@@ -1,0 +1,27 @@
+!define BLANK ""
+d:\digest\digest.obj : d:\digest\digest.c .AUTODEPEND
+ @d:
+ cd d:\digest
+ *wcc386 digest.c -i=D:\opwatcom\h;D:\opwatcom\h\os2 -w4 -e25 -zq -od -3s -b&
+t=os2 -mf
+
+d:\digest\file.obj : d:\digest\file.c .AUTODEPEND
+ @d:
+ cd d:\digest
+ *wcc386 file.c -i=D:\opwatcom\h;D:\opwatcom\h\os2 -w4 -e25 -zq -od -3s -bt=&
+os2 -mf
+
+d:\digest\digestl.exe : d:\digest\digest.obj d:\digest\file.obj .AUTODEPEND
+ @d:
+ cd d:\digest
+ @%write digestl.lk1 FIL digest.obj,file.obj
+ @%append digestl.lk1 
+!ifneq BLANK ""
+ *wlib -q -n -b digestl.imp 
+ @%append digestl.lk1 LIBR digestl.imp
+!endif
+ *wlink name digestl SYS os2v2 op st=32768 op v op maxe=25 @digestl.lk1
+!ifneq BLANK ""
+ rc -i $[: -i D:\opwatcom\h -i D:\opwatcom\h\os2  digestl.exe
+!endif
+

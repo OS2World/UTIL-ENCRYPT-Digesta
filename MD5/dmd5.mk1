@@ -1,0 +1,30 @@
+!define BLANK ""
+d:\digest\md5\DMD5.obj : d:\digest\md5\DMD5.C .AUTODEPEND
+ @d:
+ cd d:\digest\md5
+ *wcc386 DMD5.C -i=D:\watcom\h;D:\watcom\h\os2 -w4 -e25 -zq -od -bd -3s -bt=&
+os2 -mf
+
+d:\digest\md5\MD5.obj : d:\digest\md5\MD5.C .AUTODEPEND
+ @d:
+ cd d:\digest\md5
+ *wcc386 MD5.C -i=D:\watcom\h;D:\watcom\h\os2 -w4 -e25 -zq -od -bd -3s -bt=o&
+s2 -mf
+
+d:\digest\md5\dmd5.dll : d:\digest\md5\DMD5.obj d:\digest\md5\MD5.obj .AUTOD&
+EPEND
+ @d:
+ cd d:\digest\md5
+ @%write dmd5.lk1 FIL DMD5.obj,MD5.obj
+ @%append dmd5.lk1 
+!ifneq BLANK ""
+ *wlib -q -n -b dmd5.imp 
+ @%append dmd5.lk1 LIBR dmd5.imp
+!endif
+ *wlink name dmd5 SYS os2v2 dll initi termi exp DIGESTINIT exp DIGESTUPDATE &
+exp DIGESTRESULT op v op maxe=25 op many @dmd5.lk1
+!ifneq BLANK ""
+ rc -i $[: -i D:\watcom\h -i D:\watcom\h\os2  dmd5.dll
+!endif
+ wlib -n -b dmd5.lib +dmd5.dll
+
