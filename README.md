@@ -5,7 +5,7 @@ Message digest calculator
 
 LICENSE
 ===============
-* Freeware
+* BSD license
 
 COMPILE TOOLS
 ===============
